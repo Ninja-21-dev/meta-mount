@@ -1,4 +1,75 @@
-<script type="text/javascript" src="http://static.wowhead.com/widgets/power.js" defer="defer"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Insolent - Burning Blade - Mount Meta Completion Tracking</title>	
+	<script type="text/javascript" src="http://static.wowhead.com/widgets/power.js" defer></script>
+	
+	<style type="text/css">
+	body {
+		background: black;
+	}
+	table, tr, th, td {
+		margin: 0;
+		padding: 0;
+		border: 0;
+		outline: 0;
+		font-size: 100%;
+		color: #bcbdbd;
+	}
+	table.ach {
+		border-collapse: collapse;
+		border-spacing: 0;
+		background: black;
+		margin:auto;
+	}
+	.ach td { 
+		text-align:center; 
+		padding:5px; 
+		border-bottom:1px solid #333738;  
+		line-height:normal;
+		border-right:1px solid #333738;
+		font-size: 12px; 
+	}
+	td.total{
+		border-bottom: 0;
+	}
+	td.icon { 
+		text-align:center; 
+		padding: 0px;
+	}
+	.ach th {
+		height:34px;
+		padding:0;
+	}
+	td.label {
+		text-align: right; 
+		word-spacing: -1px; 
+		padding-right: 12px; 
+	}
+	td.percent {
+		text-align: right; 
+		word-spacing: -1px; 
+		font-size: 12px;
+		border-right: 0;
+		padding: 0;
+	}
+	a, a:link, a:visited, a:active, a:hover{
+		color: #bcbdbd;
+		text-decoration: none;
+	}
+	.disclaimer{
+		text-align:center;
+		color: #bcbdbd;
+		font-size:12px;
+	}
+	.center{
+		text-align:center;
+	}
+	</style>
+</head>
+<body>
+
 <cftry>
 <!--- Grab data --->
 <cfquery name="getChars">
@@ -19,66 +90,12 @@ ORDER BY CharName
 <!--- Init Tiers --->
 <cfset Tiers = DeSerializeJSON( Request.TierJSON ) />
 
-<style type="text/css">
-body {
-	background: black;
-}
-.ach table, tr, th, td {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	outline: 0;
-	font-size: 100%;
-	color: #bcbdbd;
-}
-table.ach {
-	border-collapse: collapse;
-	border-spacing: 0;
-	background: black;
-	margin:auto;
-}
-.ach td { 
-	text-align:center; 
-	padding:5px; 
-	border-bottom:1px solid #333738;  
-	line-height:normal;
-	border-right:1px solid #333738;
-	font-size: 12px; 
-}
-td.total{
-	border-bottom: 0;
-}
-td.icon { 
-	text-align:center; 
-	padding: 0px;
-}
-.ach th {
-	height:34px;
-	padding:0;
-}
-td.label {
-	text-align: right; 
-	word-spacing: -1px; 
-	
-	padding-right: 12px; 
-}
-td.percent {
-	text-align: right; 
-	word-spacing: -1px; 
-	font-size: 12px;
-	border-right: 0;
-}
-a, a:link, a:visited, a:active, a:hover{
-	color: #bcbdbd;
-	text-decoration: none;
-}
-</style>
-
 <cfoutput>
+<div style="margin:auto; width:1000px; height:202px;"><img src="images/banner.jpg" style="margin:auto;" width="1000" height="202" alt="Insolent Banner" /></div>
 
 <cfloop list="T11,T12" index="Tier">
 	<cfset Total = {} />
-	<table cellspacing="0" cellpadding="0" class="ach">
+	<table class="ach">
 		<tr>
 			<th colspan="#2+ArrayLen( Tiers[ Tier ][ 'Required' ] )#">#Tier#</th>
 		</tr>
@@ -87,7 +104,7 @@ a, a:link, a:visited, a:active, a:hover{
 			<cfloop array="#Tiers[ Tier ][ 'Required' ]#" index="Ach">
 				<td class="icon"><a href="http://wowhead.com/achievement=#Ach.Id#"><img src="http://wow.zamimg.com/images/wow/icons/medium/#Ach.Icon#.jpg" alt="#Ach.ID#" /></a></td>
 			</cfloop>
-			<th><a href="http://wowhead.com/achievement=#Tiers[ Tier ][ 'Meta' ].Id#"><img src="http://wow.zamimg.com/images/wow/icons/medium/#Tiers[ Tier ][ 'Meta' ].Icon#.jpg" alt="#Tiers[ Tier ][ 'Meta' ].Id#" /></a></th>
+			<td class="percent center"><a href="http://wowhead.com/achievement=#Tiers[ Tier ][ 'Meta' ].Id#"><img src="http://wow.zamimg.com/images/wow/icons/medium/#Tiers[ Tier ][ 'Meta' ].Icon#.jpg" alt="#Tiers[ Tier ][ 'Meta' ].Id#" /></a></td>
 		</tr>
 		<cfset CharsDisplayed = 0 />
 		<cfloop query="getChars">
@@ -109,7 +126,7 @@ a, a:link, a:visited, a:active, a:hover{
 					<cfif ! StructKeyExists( Total, "A" & Ach.ID )>
 						<cfset Total[ 'A' & Ach.ID ] = 0 />
 					</cfif>
-					<td align="center">
+					<td class="center">
 						<cfif StructFind( Achs, "A" & Ach.ID )>
 							<img src="images/check.png" alt="Completed" />
 							<cfset AchCompleted++ />
@@ -141,6 +158,7 @@ a, a:link, a:visited, a:active, a:hover{
 	<br/><br/>
 </cfloop>
 
+<p class="disclaimer">Only players active within the last two weeks and who have at least one achievement completed are shown in the table. ASCII names are also broken for some reason.</p>
 </cfoutput>
 
 <cffunction name="displayPercent">
@@ -154,3 +172,6 @@ a, a:link, a:visited, a:active, a:hover{
 	<cfdump var="#cfcatch#" />
 </cfcatch>
 </cftry>
+
+</body>
+</html>
