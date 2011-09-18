@@ -161,14 +161,14 @@ ORDER BY CharName
 <p class="disclaimer">Only players active within the last two weeks and who have at least one achievement completed are shown in the table. ASCII names are also broken for some reason.</p>
 </cfoutput>
 
-<cffunction name="displayPercent">
-	<cfargument name="Numerator" />
-	<cfargument name="Denominator" />
+<cffunction name="displayPercent" output="no" returntype="string">
+	<cfargument name="Numerator" required="yes" type="numeric" />
+	<cfargument name="Denominator" required="yes" type="numeric" />
 
 	<cfreturn '<span title="#Arguments.Numerator#/#Arguments.Denominator#">#NumberFormat( Arguments.Numerator / Arguments.Denominator * 100, "0.0" )#%</span>' />
 </cffunction>
 
-<cffunction name="displayIcon">
+<cffunction name="displayIcon" output="no" returntype="string">
 	<cfargument name="Ach" required="yes" type="struct" />
 	
 	<cfreturn '<a href="http://wowhead.com/achievement=#Arguments.Ach.Id#"><img src="http://wow.zamimg.com/images/wow/icons/medium/#Arguments.Ach.Icon#.jpg" alt="#Arguments.Ach.ID#" /></a>' />
