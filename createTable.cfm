@@ -21,4 +21,4 @@ CREATE TABLE `mounts` (
 ) ENGINE=InnoDB AUTO_INCREMENT=153 DEFAULT CHARSET=latin1
 </cfquery>
 
-Created.
+Created mounts table.

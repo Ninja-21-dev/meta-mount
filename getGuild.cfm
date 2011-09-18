@@ -1,18 +1,16 @@
 <cfsetting requesttimeout="600" />
-
-<!--- Grab Guild --->
-
-<!--- get as a binary to work around ACF screwing the UTF names --->
-<cfhttp url="http://us.battle.net/api/wow/guild/Burning%20Blade/Insolent?fields=members" result="GuildJSON" charset="utf-16" getasbinary="yes" />
+<cfflush interval="10" />
 
 <cftry>
-
-<cfset Members = DeSerializeJSON( ToString( GuildJSON.FileContent ) ).Members />
 
 <!--- Init Tiers --->
 <cfset Tiers = DeSerializeJSON( Request.TierJSON ) />
 
-<cfflush interval="10" />
+<!--- Start API --->
+<cfset API = new com.Blizzard( server = 'Burning Blade', guild = 'Insolent' ) />
+
+<!--- Grab Guild --->
+<cfset Members = API.getMembers() />
 
 <cfset Updated = 0 />
 <!--- Loop through Members --->
@@ -22,24 +20,15 @@
 	<cfif Member.Character.Level NEQ 85>
 		<cfcontinue />
 	</cfif>
-		
-	<cfhttp url="http://us.battle.net/api/wow/character/Burning%20Blade/#Member.Character.Name#?fields=achievements" result="MemberJSON" />
 	
-	<!--- Ensure it's JSON --->
-	<cfif ! isJSON ( MemberJSON.FileContent )>
-		This is not JSON.
+	<cfset MemberJSON = API.getCharacter( Member.Character.Name ) />
+		
+	<!--- Did we return an error --->
+	<cfif StructKeyExists( MemberJSON, 'Error' )>
 		<cfdump var="#MemberJSON#" />
 		<cfcontinue />
-	</cfif>
+	</cfif>	
 		
-	<cfset MemberJSON = DeSerializeJSON( MemberJSON.FileContent ) />
-	
-	<!--- See if we have a result --->
-	<cfif StructKeyExists( MemberJSON, "Status" ) AND MemberJSON.Status EQ "nok">
-		... Character not found
-		<cfcontinue />
-	</cfif>
-	
 	<!--- Only deal with people that have been updated in two weeks --->
 	<cfset StartingDate = CreateDate( 1970, 1, 1 ) />
 	<!--- Convert LastModified from Milliseconds to minutes, otherwise ACF complains --->
@@ -52,7 +41,6 @@
 	<!--- Ensure we have achievements --->
 	<cfif ! StructKeyExists( MemberJSON, "Achievements" )>
 		Missing Achievements Struct.
-		<cfoutput>http://us.battle.net/api/wow/character/Burning%20Blade/#Member.Character.Name#?fields=achievements</cfoutput>
 		<cfdump var="#MemberJSON#" />
 		<cfcontinue />
 	</cfif>
@@ -134,4 +122,5 @@
 All done.
 <cfcatch>
 	<cfdump var="#cfcatch#">
-</cfcatch></cftry>
+</cfcatch>
+</cftry>
