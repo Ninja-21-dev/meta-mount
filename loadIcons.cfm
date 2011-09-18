@@ -7,21 +7,22 @@
 <cfset Tiers.T12.Complete = '5828' />
 <cfset Tiers.T12.Required = [] />
 
-<!--- Load Ach icons --->
-<cfloop file="achievementIcons.json" index="Line">
-	<cfset ThisAch = DeSerializeJSON( Line ) />
-	
-	<cfloop collection="#Tiers#" item="Tier">
-		<!--- Find Normal Requirements --->
-		<cfif ListFind( Tiers[ Tier ][ 'List' ], ThisAch.ID ) NEQ 0>
-			<cfset ThisAch.Icon = Replace( ThisAch.Icon, " ", "-", "ALL" ) />
-			<cfset Tiers[ Tier ][ 'Required' ].Add( ThisAch ) />
-			<cfbreak />
-		</cfif>
-		<!--- Find Meta --->
-		<cfif Tiers[ Tier ][ 'Complete' ] EQ ThisAch.ID>
-			<cfset Tiers[ Tier ][ 'Meta' ] = ThisAch />
-		</cfif>
+<!--- Load Ach icons, loop through the list to maintain order --->
+<cfloop collection="#Tiers#" item="Tier">
+	<!--- Find Normal Requirements --->
+	<cfloop list="#Tiers[ Tier ][ 'List' ]#" index="Ach">
+		<cfloop file="achievementIcons.json" index="Line">
+			<cfset ThisAch = DeSerializeJSON( Line ) />
+			<cfif ThisAch.ID EQ Ach>
+				<cfset ThisAch.Icon = Replace( ThisAch.Icon, " ", "-", "ALL" ) />
+				<cfset Tiers[ Tier ][ 'Required' ].Add( ThisAch ) />
+				<cfbreak />
+			</cfif>
+			<!--- Find Meta --->
+			<cfif Tiers[ Tier ][ 'Complete' ] EQ ThisAch.ID>
+				<cfset Tiers[ Tier ][ 'Meta' ] = ThisAch />
+			</cfif>
+		</cfloop>
 	</cfloop>
 </cfloop>
 
