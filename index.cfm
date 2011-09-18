@@ -29,6 +29,7 @@ body {
 	border: 0;
 	outline: 0;
 	font-size: 100%;
+	color: #bcbdbd;
 }
 table.ach {
 	border-collapse: collapse;
@@ -42,6 +43,10 @@ table.ach {
 	border-bottom:1px solid #333738;  
 	line-height:normal;
 	border-right:1px solid #333738;
+	font-size: 12px; 
+}
+td.total{
+	border-bottom: 0;
 }
 td.icon { 
 	text-align:center; 
@@ -50,13 +55,11 @@ td.icon {
 .ach th {
 	height:34px;
 	padding:0;
-	color: #bcbdbd;
 }
 td.label {
 	text-align: right; 
 	word-spacing: -1px; 
-	color: #bcbdbd; 
-	font-size: 12px; 
+	
 	padding-right: 12px; 
 }
 td.percent {
@@ -66,11 +69,13 @@ td.percent {
 	font-size: 12px;
 	border-right: 0;
 }
+
 </style>
 
 <cfoutput>
 
 <cfloop list="T11,T12" index="Tier">
+	<cfset Total = {} />
 	<table cellspacing="0" cellpadding="0" class="ach">
 		<tr>
 			<th colspan="#2+ArrayLen( Tiers[ Tier ][ 'Required' ] )#">#Tier#</th>
@@ -82,6 +87,7 @@ td.percent {
 			</cfloop>
 			<th><a href="http://wowhead.com/achievement=#Tiers[ Tier ][ 'Meta' ].Id#"><img src="http://wow.zamimg.com/images/wow/icons/medium/#Tiers[ Tier ][ 'Meta' ].Icon#.jpg" alt="#Tiers[ Tier ][ 'Meta' ].Id#" /></a></th>
 		</tr>
+		<cfset CharsDisplayed = 0 />
 		<cfloop query="getChars">
 			<!--- Convert to Struct --->
 			<cfset Achs = DeSerializeJSON( getChars[ Tier ][ getChars.CurrentRow ] ) />
@@ -91,27 +97,56 @@ td.percent {
 				<cfcontinue />
 			</cfif>
 			
-			<cfset Counter = 0 />
+			<cfset CharsDisplayed++ />
+			
+			<cfset AchCompleted = 0 />
 			<tr>
 				<td class="label">#getChars.CharName#</td>
 				<cfloop array="#Tiers[ Tier ][ 'Required' ]#" index="Ach">
+					<!--- Create a running total --->
+					<cfif ! StructKeyExists( Total, "A" & Ach.ID )>
+						<cfset Total[ 'A' & Ach.ID ] = 0 />
+					</cfif>
 					<td align="center">
 						<cfif StructFind( Achs, "A" & Ach.ID )>
 							<img src="images/check.png" alt="Completed" />
-							<cfset Counter++ />
+							<cfset AchCompleted++ />
+							<cfset Total[ 'A' & Ach.ID ]++ />
 						<cfelse>
 							<img src="images/x.png" alt="Not Completed" />
 						</cfif>	
-					</td>				
+					</td>					
 				</cfloop>
-				<td class="percent"><span title="#Counter#/#ArrayLen( Tiers[ Tier ][ 'Required' ] )#">#NumberFormat( Counter / ArrayLen( Tiers[ Tier ][ 'Required' ] ) * 100, "0.0" )#%</span></td>
+				<td class="percent">#displayPercent( AchCompleted, ArrayLen( Tiers[ Tier ][ 'Required' ] ) )#</td>
+				<!--- Track the meta total too --->
+				<cfif ! StructKeyExists( Total, "A" & Tiers[ Tier ][ 'Meta' ].Id )>
+					<cfset Total[ "A" & Tiers[ Tier ][ 'Meta' ].Id ] = 0 />
+				</cfif>
+				<cfif AchCompleted EQ ArrayLen( Tiers[ Tier ][ 'Required' ] )>
+					<cfset Total[ "A" & Tiers[ Tier ][ 'Meta' ].Id ]++ />
+				</cfif>
 			</tr>
 		</cfloop>
+		<!--- Display Totals --->
+		<tr>
+			<td class="total">&nbsp;</td>
+			<cfloop array="#Tiers[ Tier ][ 'Required' ]#" index="Ach">
+				<td class="total">#displayPercent( Total[ 'A' & Ach.Id ], CharsDisplayed )#</td>
+			</cfloop>
+			<td class="total percent">#displayPercent( Total[ 'A' & Tiers[ Tier ][ 'Meta' ].Id ], CharsDisplayed )#</td>
+		</tr>
 	</table>
 	<br/><br/>
 </cfloop>
 
 </cfoutput>
+
+<cffunction name="displayPercent">
+	<cfargument name="Numerator" />
+	<cfargument name="Denominator" />
+
+	<cfreturn '<span title="#Arguments.Numerator#/#Arguments.Denominator#">#NumberFormat( Arguments.Numerator / Arguments.Denominator * 100, "0.0" )#%</span>' />
+</cffunction>
 
 <cfcatch>
 	<cfdump var="#cfcatch#" />
