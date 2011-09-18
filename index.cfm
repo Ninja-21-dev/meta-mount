@@ -4,68 +4,7 @@
 	<meta charset="utf-8" />
 	<title>Insolent - Burning Blade - Mount Meta Completion Tracking</title>	
 	<script type="text/javascript" src="http://static.wowhead.com/widgets/power.js" defer></script>
-	
-	<style type="text/css">
-	body {
-		background: #000;
-	}
-	table, tr, th, td {
-		margin: 0;
-		padding: 0;
-		border: 0;
-		outline: 0;
-		font-size: 100%;
-		color: #bcbdbd;
-	}
-	table.ach {
-		border-collapse: collapse;
-		border-spacing: 0;
-		margin:auto;
-	}
-	.ach td { 
-		text-align:center; 
-		padding:5px; 
-		border-bottom:1px solid #333738;  
-		line-height:normal;
-		border-right:1px solid #333738;
-		font-size: 12px; 
-	}
-	td.total{
-		border-bottom: 0;
-	}
-	td.icon { 
-		text-align:center; 
-		padding: 0;
-	}
-	.ach th {
-		height:34px;
-		padding:0;
-	}
-	td.label {
-		text-align: right; 
-		word-spacing: -1px; 
-		padding-right: 12px; 
-	}
-	td.percent {
-		text-align: right; 
-		word-spacing: -1px; 
-		font-size: 12px;
-		border-right: 0;
-		padding: 0;
-	}
-	a, a:link, a:visited, a:active, a:hover{
-		color: #bcbdbd;
-		text-decoration: none;
-	}
-	.disclaimer{
-		text-align:center;
-		color: #bcbdbd;
-		font-size:12px;
-	}
-	.center{
-		text-align:center;
-	}
-	</style>
+	<link rel='stylesheet' href='css.css' type='text/css'/>
 </head>
 <body>
 
