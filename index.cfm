@@ -23,10 +23,13 @@ ORDER BY CharName
 <div style="margin:auto; width:1000px; height:202px;"><img src="images/banner.jpg" width="1000" height="202" alt="Insolent Banner" /></div>
 
 <cfloop list="T11,T12" index="Tier">
+	<!--- Init Tier Counters --->
 	<cfset Total = new Total() />
+	<cfset CharsDisplayed = 0 />
+	
 	<table class="ach">
 		<tr>
-			<th colspan="#2+ArrayLen( Tiers[ Tier ][ 'Required' ] )#">#Tier#</th>
+			<th colspan="#2+ArrayLen( Tiers[ Tier ][ 'Required' ] )#">#Tiers[ Tier ].TierName#</th>
 		</tr>
 		<tr>
 			<td class="label">Character</td>
@@ -35,7 +38,7 @@ ORDER BY CharName
 			</cfloop>
 			<td class="percent center">#DisplayIcon( Tiers[ Tier ][ 'Meta' ] )#</td>
 		</tr>
-		<cfset CharsDisplayed = 0 />
+		
 		<cfloop query="getChars">
 			<!--- Convert to Struct --->
 			<cfset Achs = DeSerializeJSON( getChars[ Tier ][ getChars.CurrentRow ] ) />
@@ -86,8 +89,17 @@ ORDER BY CharName
 <cffunction name="displayPercent" output="no" returntype="string">
 	<cfargument name="Numerator" required="yes" type="numeric" />
 	<cfargument name="Denominator" required="yes" type="numeric" />
-
-	<cfreturn '<span title="#Arguments.Numerator#/#Arguments.Denominator#">#NumberFormat( Arguments.Numerator / Arguments.Denominator * 100, "0.0" )#%</span>' />
+	
+	<cfset var Output = '<span title="' & Arguments.Numerator & '/' & Arguments.Denominator & '">' />
+	<!--- Prevent dividing by zero --->
+	<cfif Arguments.Denominator EQ 0>
+		<cfset Output &= '0.0' />
+	<cfelse>
+		<cfset Output &= NumberFormat( Arguments.Numerator / Arguments.Denominator * 100, "0.0" ) />
+	</cfif>
+	<cfset Output &= '%</span>' />
+	
+	<cfreturn Output />
 </cffunction>
 
 <cffunction name="displayIcon" output="no" returntype="string">
