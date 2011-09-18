@@ -102,9 +102,9 @@ ORDER BY CharName
 		<tr>
 			<td class="label">Character</td>
 			<cfloop array="#Tiers[ Tier ][ 'Required' ]#" index="Ach">
-				<td class="icon"><a href="http://wowhead.com/achievement=#Ach.Id#"><img src="http://wow.zamimg.com/images/wow/icons/medium/#Ach.Icon#.jpg" alt="#Ach.ID#" /></a></td>
+				<td class="icon">#DisplayIcon( Ach )#</td>
 			</cfloop>
-			<td class="percent center"><a href="http://wowhead.com/achievement=#Tiers[ Tier ][ 'Meta' ].Id#"><img src="http://wow.zamimg.com/images/wow/icons/medium/#Tiers[ Tier ][ 'Meta' ].Icon#.jpg" alt="#Tiers[ Tier ][ 'Meta' ].Id#" /></a></td>
+			<td class="percent center">#DisplayIcon( Tiers[ Tier ][ 'Meta' ] )#</td>
 		</tr>
 		<cfset CharsDisplayed = 0 />
 		<cfloop query="getChars">
@@ -166,6 +166,12 @@ ORDER BY CharName
 	<cfargument name="Denominator" />
 
 	<cfreturn '<span title="#Arguments.Numerator#/#Arguments.Denominator#">#NumberFormat( Arguments.Numerator / Arguments.Denominator * 100, "0.0" )#%</span>' />
+</cffunction>
+
+<cffunction name="displayIcon">
+	<cfargument name="Ach" required="yes" type="struct" />
+	
+	<cfreturn '<a href="http://wowhead.com/achievement=#Arguments.Ach.Id#"><img src="http://wow.zamimg.com/images/wow/icons/medium/#Arguments.Ach.Icon#.jpg" alt="#Arguments.Ach.ID#" /></a>' />
 </cffunction>
 
 <cfcatch>
