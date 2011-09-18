@@ -16,15 +16,6 @@ FROM mounts
 ORDER BY CharName
 </cfquery>
 
-<!--- Adobe and Railo define JSON 1 differently --->
-<cfif Server.ColdFusion.ProductName EQ 'ColdFusion Server'>
-	<cfset Value = '1.0' />
-<cfelseif Server.ColdFusion.ProductName EQ 'Railo'>
-	<cfset Value = '1' />
-<cfelse>
-	<cfset Value = '1.0' />
-</cfif>
-
 <!--- Init Tiers --->
 <cfset Tiers = DeSerializeJSON( Request.TierJSON ) />
 
@@ -49,8 +40,8 @@ ORDER BY CharName
 			<!--- Convert to Struct --->
 			<cfset Achs = DeSerializeJSON( getChars[ Tier ][ getChars.CurrentRow ] ) />
 						
-			<!--- Ensure we have at least a 1 --->			
-			<cfif ArrayLen( StructFindValue( Achs, Value ) ) EQ 0>
+			<!--- Ensure we have at least one Y --->			
+			<cfif ArrayLen( StructFindValue( Achs, 'Y' ) ) EQ 0>
 				<cfcontinue />
 			</cfif>
 			
@@ -61,7 +52,7 @@ ORDER BY CharName
 				<td class="label"><a href="http://us.battle.net/wow/en/character/burning-blade/#getChars.CharName#/advanced">#getChars.CharName#</a></td>
 				<cfloop array="#Tiers[ Tier ][ 'Required' ]#" index="Ach">
 					<td class="center">
-						<cfif StructFind( Achs, "A" & Ach.ID )>
+						<cfif StructFind( Achs, Ach.ID ) EQ 'Y'>
 							<img src="images/check.png" alt="Completed" />
 							<cfset AchCompleted++ />
 							<cfset Total.IncrementTotal( Ach.ID ) />

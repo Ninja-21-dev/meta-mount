@@ -76,10 +76,10 @@
 		<!--- Set Completed --->
 		<cfloop array="#Tiers[ Tier ][ 'Required' ]#" index="Ach">
 			<cfif Complete OR ArrayContains( Achs, Ach.ID )>
-				<cfset Tiers[ Tier ][ 'Completed' ][ 'A' & Ach.ID ] = 1 />
+				<cfset Tiers[ Tier ][ 'Completed' ][ Ach.ID ] = 'Y' />
 				<cfset hasAch = true />
 			<cfelse>
-				<cfset Tiers[ Tier ][ 'Completed' ][ 'A' & Ach.ID ] = 0 />
+				<cfset Tiers[ Tier ][ 'Completed' ][ Ach.ID ] = 'N' />
 			</cfif>
 		</cfloop>
 	</cfloop>
