@@ -1,3 +1,8 @@
+<!--- Prevent this page from being called accidently --->
+<cfif ! StructKeyExists( url, "reload" )>
+	<cflocation url="./" addtoken="no" />
+</cfif>
+
 <!--- Make Table --->
 <cfquery>
 DROP TABLE IF EXISTS `mounts`
