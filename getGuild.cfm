@@ -5,17 +5,12 @@
 <!--- get as a binary to work around ACF screwing the UTF names --->
 <cfhttp url="http://us.battle.net/api/wow/guild/Burning%20Blade/Insolent?fields=members" result="GuildJSON" charset="utf-16" getasbinary="yes" />
 
-
 <cftry>
 
 <cfset Members = DeSerializeJSON( ToString( GuildJSON.FileContent ) ).Members />
 
 <!--- Init Tiers --->
-<cfset Tiers.T11.List = '5094,5107,5108,5109,5115,5116,5118,5117,5119,5120,5122,5123,5306,5307,5308,5309,5310,4849,5300,4852,5311,5312,5304,5305' />
-<cfset Tiers.T11.Complete = '4853' />
-
-<cfset Tiers.T12.List = '5821,5820,5813,5829,5830,5799,5807,5808,5806,5809,5805,5804' />
-<cfset Tiers.T12.Complete = '5828' />
+<cfset Tiers = DeSerializeJSON( Request.TierJSON ) />
 
 <cfflush interval="10" />
 	
@@ -27,16 +22,16 @@
 		<cfcontinue />
 	</cfif>
 		
-	<cfhttp url="http://us.battle.net/api/wow/character/Burning%20Blade/#Member.Character.Name#?fields=achievements" result="MemberJSON1" />
+	<cfhttp url="http://us.battle.net/api/wow/character/Burning%20Blade/#Member.Character.Name#?fields=achievements" result="MemberJSON" />
 	
 	<!--- Ensure it's JSON --->
-	<cfif ! isJSON ( MemberJSON1.FileContent )>
+	<cfif ! isJSON ( MemberJSON.FileContent )>
 		This is not JSON.
-		<cfdump var="#MemberJSON1#" />
+		<cfdump var="#MemberJSON#" />
 		<cfcontinue />
 	</cfif>
 	
-	<cfset MemberJSON = DeSerializeJSON( MemberJSON1.FileContent ) />
+	<cfset MemberJSON = DeSerializeJSON( MemberJSON.FileContent ) />
 
 	<!--- Ensure we have achievements --->
 	<cfif ! StructKeyExists( MemberJSON, "Achievements" )>
@@ -60,15 +55,15 @@
 	<!--- Loop the tiers --->
 	<cfloop collection="#Tiers#" item="Tier">
 		<!--- Is the meta finished? --->
-		<cfset Complete = ArrayContains( Achs, Tiers[ Tier ][ 'Complete' ] ) /> 
+		<cfset Complete = ArrayContains( Achs, Tiers[ Tier ][ 'Meta' ][ 'Id' ] ) /> 
 		
 		<!--- Set Completed --->
-		<cfloop list="#Tiers[ Tier ][ 'List' ]#" index="Ach">
-			<cfif Complete OR ArrayContains( Achs, Ach )>
-				<cfset Tiers[ Tier ][ 'Completed' ][ 'A' & Ach ] = 1 />
+		<cfloop array="#Tiers[ Tier ][ 'Required' ]#" index="Ach">
+			<cfif Complete OR ArrayContains( Achs, Ach.ID )>
+				<cfset Tiers[ Tier ][ 'Completed' ][ 'A' & Ach.ID ] = 1 />
 				<cfset hasAch = true />
 			<cfelse>
-				<cfset Tiers[ Tier ][ 'Completed' ][ 'A' & Ach ] = 0 />
+				<cfset Tiers[ Tier ][ 'Completed' ][ 'A' & Ach.ID ] = 0 />
 			</cfif>
 		</cfloop>
 	</cfloop>

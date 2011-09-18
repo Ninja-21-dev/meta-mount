@@ -36,8 +36,7 @@ ORDER BY CharName
 			<!--- Convert to Struct --->
 			<cfset Achs = DeSerializeJSON( getChars[ Tier ][ getChars.CurrentRow ] ) />
 						
-			<!--- Ensure we have at least a 1 --->
-			
+			<!--- Ensure we have at least a 1 --->			
 			<cfif ArrayLen( StructFindValue( Achs, Value ) ) EQ 0>
 				<cfcontinue />
 			</cfif>
