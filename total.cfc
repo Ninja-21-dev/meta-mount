@@ -2,12 +2,12 @@ component output = false
 {
 	Variables.Total = {};
 	
-	void function incrementTotal( required string Name )
+	void function incrementTotal( required string Name, numeric Value = 1 )
 	{
 		// Ensure the total exists
 		createTotal( Arguments.Name );
 		
-		Variables.Total[ Arguments.Name ]++;
+		Variables.Total[ Arguments.Name ] += Arguments.Value;
 	}
 	
 	numeric function getTotal( required string Name )
