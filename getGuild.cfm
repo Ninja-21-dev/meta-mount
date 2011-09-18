@@ -16,7 +16,7 @@
 	
 <!--- Loop through Members --->
 <cfloop array="#Members#" index="Member">
-	Processing <cfoutput>#Member.Character.Name#</cfoutput><br/>
+	<br/>Processing <cfoutput>#Member.Character.Name#</cfoutput>
 	<!--- Only Process level 85s ---->
 	<cfif Member.Character.Level NEQ 85>
 		<cfcontinue />
@@ -30,8 +30,23 @@
 		<cfdump var="#MemberJSON#" />
 		<cfcontinue />
 	</cfif>
-	
+		
 	<cfset MemberJSON = DeSerializeJSON( MemberJSON.FileContent ) />
+	
+	<!--- See if we have a result --->
+	<cfif StructKeyExists( MemberJSON, "Status" ) AND MemberJSON.Status EQ "nok">
+		... Character not found
+		<cfcontinue />
+	</cfif>
+	
+	<!--- Only deal with people that have been updated in two weeks --->
+	<cfset StartingDate = CreateDate( 1970, 1, 1 ) />
+	<!--- Convert LastModified from Milliseconds to minutes, otherwise ACF complains --->
+	<cfset LastModified = MemberJSON.LastModified / 1000 / 60 />
+	<cfset LastModified = DateAdd( "n", LastModified, StartingDate ) />
+	<cfif LastModified LTE DateAdd( "d", -14, Now() )>
+		... Character not updated within two weeks<cfcontinue />
+	</cfif>
 
 	<!--- Ensure we have achievements --->
 	<cfif ! StructKeyExists( MemberJSON, "Achievements" )>
