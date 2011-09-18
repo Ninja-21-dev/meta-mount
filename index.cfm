@@ -6,7 +6,6 @@ FROM mounts
 ORDER BY CharName
 </cfquery>
 
-
 <!--- Adobe and Railo define JSON 1 differently --->
 <cfif Server.ColdFusion.ProductName EQ 'ColdFusion Server'>
 	<cfset Value = '1.0' />
@@ -16,21 +15,22 @@ ORDER BY CharName
 	<cfset Value = '1.0' />
 </cfif>
 
+<!--- Init Tiers --->
+<cfset Tiers = DeSerializeJSON( Request.TierJSON ) />
+
 <cfoutput>
 
 <cfloop list="T11,T12" index="Tier">
-	<!--- Need a static ach list --->
-	<cfset AchList = StructKeyList( DeSerializeJSON( getChars[ Tier ][ 1 ] ) ) />
 	<table border="1">
 		<tr>
-			<th colspan="#2+ListLen( AchList )#">#Tier#</th>
+			<th colspan="#2+ArrayLen( Tiers[ Tier ][ 'Required' ] )#">#Tier#</th>
 		</tr>
 		<tr>
 			<th>Character</th>
-			<cfloop list="#AchList#" index="Ach">
-				<th>#Ach#</th>
+			<cfloop array="#Tiers[ Tier ][ 'Required' ]#" index="Ach">
+				<th><img src="http://wow.zamimg.com/images/wow/icons/medium/#Ach.Icon#.jpg" alt="#Ach.ID#" /></th>
 			</cfloop>
-			<th>% Done</th>
+			<th><img src="http://wow.zamimg.com/images/wow/icons/medium/#Tiers[ Tier ][ 'Meta' ].Icon#.jpg" alt="#Tiers[ Tier ][ 'Meta' ].Id#" /></th>
 		</tr>
 		<cfloop query="getChars">
 			<!--- Convert to Struct --->
@@ -44,15 +44,15 @@ ORDER BY CharName
 			<cfset Counter = 0 />
 			<tr>
 				<th>#getChars.CharName#</th>
-				<cfloop list="#AchList#" index="Ach">
-					<cfif StructFind( Achs, Ach )>
+				<cfloop array="#Tiers[ Tier ][ 'Required' ]#" index="Ach">
+					<cfif StructFind( Achs, "A" & Ach.ID )>
 						<td align="center">Yes</td>
 						<cfset Counter++ />
 					<cfelse>
 						<td align="center">No</td>
 					</cfif>						
 				</cfloop>
-				<td align="right">#NumberFormat( Counter / ListLen( AchList ) * 100, "0.0" )#%</td>
+				<td align="right">#NumberFormat( Counter / ArrayLen( Tiers[ Tier ][ 'Required' ] ) * 100, "0.0" )#%</td>
 			</tr>
 		</cfloop>
 	</table>
