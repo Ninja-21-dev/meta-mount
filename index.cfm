@@ -1,3 +1,4 @@
+<script type="text/javascript" src="http://static.wowhead.com/widgets/power.js" defer="defer"></script>
 <cftry>
 <!--- Grab data --->
 <cfquery name="getChars">
@@ -28,9 +29,9 @@ ORDER BY CharName
 		<tr>
 			<th>Character</th>
 			<cfloop array="#Tiers[ Tier ][ 'Required' ]#" index="Ach">
-				<th><img src="http://wow.zamimg.com/images/wow/icons/medium/#Ach.Icon#.jpg" alt="#Ach.ID#" /></th>
+				<th><a href="http://wowhead.com/achievement=#Ach.Id#"><img src="http://wow.zamimg.com/images/wow/icons/medium/#Ach.Icon#.jpg" alt="#Ach.ID#" /></a></th>
 			</cfloop>
-			<th><img src="http://wow.zamimg.com/images/wow/icons/medium/#Tiers[ Tier ][ 'Meta' ].Icon#.jpg" alt="#Tiers[ Tier ][ 'Meta' ].Id#" /></th>
+			<th><a href="http://wowhead.com/achievement=#Tiers[ Tier ][ 'Meta' ].Id#"><img src="http://wow.zamimg.com/images/wow/icons/medium/#Tiers[ Tier ][ 'Meta' ].Icon#.jpg" alt="#Tiers[ Tier ][ 'Meta' ].Id#" /></a></th>
 		</tr>
 		<cfloop query="getChars">
 			<!--- Convert to Struct --->
