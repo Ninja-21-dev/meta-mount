@@ -46,12 +46,14 @@ ORDER BY CharName
 			<tr>
 				<th>#getChars.CharName#</th>
 				<cfloop array="#Tiers[ Tier ][ 'Required' ]#" index="Ach">
-					<cfif StructFind( Achs, "A" & Ach.ID )>
-						<td align="center">Yes</td>
-						<cfset Counter++ />
-					<cfelse>
-						<td align="center">No</td>
-					</cfif>						
+					<td align="center">
+						<cfif StructFind( Achs, "A" & Ach.ID )>
+							<img src="images/check.png" alt="Completed" />
+							<cfset Counter++ />
+						<cfelse>
+							<img src="images/x.png" align="Not Completed" />
+						</cfif>	
+					</td>				
 				</cfloop>
 				<td align="right">#NumberFormat( Counter / ArrayLen( Tiers[ Tier ][ 'Required' ] ) * 100, "0.0" )#%</td>
 			</tr>
