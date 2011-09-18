@@ -65,11 +65,13 @@ td.label {
 td.percent {
 	text-align: right; 
 	word-spacing: -1px; 
-	color: #bcbdbd; 
 	font-size: 12px;
 	border-right: 0;
 }
-
+a, a:link, a:visited, a:active, a:hover{
+	color: #bcbdbd;
+	text-decoration: none;
+}
 </style>
 
 <cfoutput>
@@ -101,7 +103,7 @@ td.percent {
 			
 			<cfset AchCompleted = 0 />
 			<tr>
-				<td class="label">#getChars.CharName#</td>
+				<td class="label"><a href="http://us.battle.net/wow/en/character/burning-blade/#getChars.CharName#/advanced">#getChars.CharName#</a></td>
 				<cfloop array="#Tiers[ Tier ][ 'Required' ]#" index="Ach">
 					<!--- Create a running total --->
 					<cfif ! StructKeyExists( Total, "A" & Ach.ID )>
