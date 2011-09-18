@@ -100,11 +100,11 @@ td.percent {
 							<img src="images/check.png" alt="Completed" />
 							<cfset Counter++ />
 						<cfelse>
-							<img src="images/x.png" align="Not Completed" />
+							<img src="images/x.png" alt="Not Completed" />
 						</cfif>	
 					</td>				
 				</cfloop>
-				<td class="percent">#NumberFormat( Counter / ArrayLen( Tiers[ Tier ][ 'Required' ] ) * 100, "0.0" )#%</td>
+				<td class="percent"><span title="#Counter#/#ArrayLen( Tiers[ Tier ][ 'Required' ] )#">#NumberFormat( Counter / ArrayLen( Tiers[ Tier ][ 'Required' ] ) * 100, "0.0" )#%</span></td>
 			</tr>
 		</cfloop>
 	</table>
