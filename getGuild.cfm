@@ -13,7 +13,8 @@
 <cfset Tiers = DeSerializeJSON( Request.TierJSON ) />
 
 <cfflush interval="10" />
-	
+
+<cfset Updated = 0 />
 <!--- Loop through Members --->
 <cfloop array="#Members#" index="Member">
 	<br/>Processing <cfoutput>#Member.Character.Name#</cfoutput>
@@ -114,18 +115,21 @@
 		</cfloop>
 		LastUpdated = <cfqueryparam value="#Now()#" cfsqltype="cf_sql_timestamp" />
 		</cfquery>
+		<cfset Updated++ />
 	</cfif>
 </cfloop>
 
-<!--- Cleanup --->
-<cfquery result="Deleted">
-DELETE FROM mounts
-WHERE LastUpdated <= <cfqueryparam value="#DateAdd( 'd', -14, Now() )#" cfsqltype="cf_sql_timestamp" />
-</cfquery>
+<!--- Cleanup only if we've updated at least 10--->
+<cfif Updated GTE 10>
+	<cfquery result="Deleted">
+	DELETE FROM mounts
+	WHERE LastUpdated <= <cfqueryparam value="#DateAdd( 'd', -14, Now() )#" cfsqltype="cf_sql_timestamp" />
+	</cfquery>
 
-<br/>
-Deleted: <cfoutput>#Deleted.RecordCount#</cfoutput>
-<br/><br/>
+	<br/>
+	Deleted: <cfoutput>#Deleted.RecordCount#</cfoutput>
+	<br/><br/>
+</cfif>
 
 All done.
 <cfcatch>
