@@ -29,10 +29,10 @@ ORDER BY CharName
 <cfset Tiers = DeSerializeJSON( Request.TierJSON ) />
 
 <cfoutput>
-<div style="margin:auto; width:1000px; height:202px;"><img src="images/banner.jpg" style="margin:auto;" width="1000" height="202" alt="Insolent Banner" /></div>
+<div style="margin:auto; width:1000px; height:202px;"><img src="images/banner.jpg" width="1000" height="202" alt="Insolent Banner" /></div>
 
 <cfloop list="T11,T12" index="Tier">
-	<cfset Total = {} />
+	<cfset Total = new Total() />
 	<table class="ach">
 		<tr>
 			<th colspan="#2+ArrayLen( Tiers[ Tier ][ 'Required' ] )#">#Tier#</th>
@@ -60,15 +60,11 @@ ORDER BY CharName
 			<tr>
 				<td class="label"><a href="http://us.battle.net/wow/en/character/burning-blade/#getChars.CharName#/advanced">#getChars.CharName#</a></td>
 				<cfloop array="#Tiers[ Tier ][ 'Required' ]#" index="Ach">
-					<!--- Create a running total --->
-					<cfif ! StructKeyExists( Total, "A" & Ach.ID )>
-						<cfset Total[ 'A' & Ach.ID ] = 0 />
-					</cfif>
 					<td class="center">
 						<cfif StructFind( Achs, "A" & Ach.ID )>
 							<img src="images/check.png" alt="Completed" />
 							<cfset AchCompleted++ />
-							<cfset Total[ 'A' & Ach.ID ]++ />
+							<cfset Total.IncrementTotal( Ach.ID ) />
 						<cfelse>
 							<img src="images/x.png" alt="Not Completed" />
 						</cfif>	
@@ -76,11 +72,8 @@ ORDER BY CharName
 				</cfloop>
 				<td class="percent">#displayPercent( AchCompleted, ArrayLen( Tiers[ Tier ][ 'Required' ] ) )#</td>
 				<!--- Track the meta total too --->
-				<cfif ! StructKeyExists( Total, "A" & Tiers[ Tier ][ 'Meta' ].Id )>
-					<cfset Total[ "A" & Tiers[ Tier ][ 'Meta' ].Id ] = 0 />
-				</cfif>
-				<cfif AchCompleted EQ ArrayLen( Tiers[ Tier ][ 'Required' ] )>
-					<cfset Total[ "A" & Tiers[ Tier ][ 'Meta' ].Id ]++ />
+				<cfif AchCompleted EQ ArrayLen( Tiers[ Tier ][ 'Required'] )>
+					<cfset Total.IncrementTotal( Tiers[ Tier ][ 'Meta' ].ID ) />
 				</cfif>
 			</tr>
 		</cfloop>
@@ -88,9 +81,9 @@ ORDER BY CharName
 		<tr>
 			<td class="total">&nbsp;</td>
 			<cfloop array="#Tiers[ Tier ][ 'Required' ]#" index="Ach">
-				<td class="total">#displayPercent( Total[ 'A' & Ach.Id ], CharsDisplayed )#</td>
+				<td class="total">#displayPercent( Total.getTotal( Ach.Id ), CharsDisplayed )#</td>
 			</cfloop>
-			<td class="total percent">#displayPercent( Total[ 'A' & Tiers[ Tier ][ 'Meta' ].Id ], CharsDisplayed )#</td>
+			<td class="total percent">#displayPercent( Total.getTotal( Tiers[ Tier ][ 'Meta' ].Id ), CharsDisplayed )#</td>
 		</tr>
 	</table>
 	<br/><br/>
