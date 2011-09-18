@@ -7,7 +7,7 @@
 	
 	<style type="text/css">
 	body {
-		background: black;
+		background: #000;
 	}
 	table, tr, th, td {
 		margin: 0;
@@ -20,7 +20,6 @@
 	table.ach {
 		border-collapse: collapse;
 		border-spacing: 0;
-		background: black;
 		margin:auto;
 	}
 	.ach td { 
@@ -36,7 +35,7 @@
 	}
 	td.icon { 
 		text-align:center; 
-		padding: 0px;
+		padding: 0;
 	}
 	.ach th {
 		height:34px;
@@ -171,7 +170,7 @@ ORDER BY CharName
 <cffunction name="displayIcon" output="no" returntype="string">
 	<cfargument name="Ach" required="yes" type="struct" />
 	
-	<cfreturn '<a href="http://wowhead.com/achievement=#Arguments.Ach.Id#"><img src="http://wow.zamimg.com/images/wow/icons/medium/#Arguments.Ach.Icon#.jpg" alt="#Arguments.Ach.ID#" /></a>' />
+	<cfreturn '<a href="http://www.wowhead.com/achievement=#Arguments.Ach.Id#"><img src="http://wow.zamimg.com/images/wow/icons/medium/#Arguments.Ach.Icon#.jpg" alt="#Arguments.Ach.ID#" /></a>' />
 </cffunction>
 
 <cfcatch>
