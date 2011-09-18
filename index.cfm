@@ -24,7 +24,7 @@ ORDER BY CharName
 
 <cfloop list="T11,T12" index="Tier">
 	<!--- Init Tier Counters --->
-	<cfset Total = new Total() />
+	<cfset Total = new com.Total() />
 	<cfset CharsDisplayed = 0 />
 	
 	<table class="ach">
