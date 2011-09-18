@@ -14,6 +14,7 @@
 	<cfloop collection="#Tiers#" item="Tier">
 		<!--- Find Normal Requirements --->
 		<cfif ListFind( Tiers[ Tier ][ 'List' ], ThisAch.ID ) NEQ 0>
+			<cfset ThisAch.Icon = Replace( ThisAch.Icon, " ", "-", "ALL" ) />
 			<cfset Tiers[ Tier ][ 'Required' ].Add( ThisAch ) />
 			<cfbreak />
 		</cfif>
