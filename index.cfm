@@ -55,7 +55,7 @@ ORDER BY CharName
 				<td class="label"><a href="http://us.battle.net/wow/en/character/burning-blade/#getChars.CharName#/advanced">#getChars.CharName#</a></td>
 				<cfloop array="#Tiers[ Tier ][ 'Required' ]#" index="Ach">
 					<td class="center">
-						<cfif StructFind( Achs, Ach.ID ) EQ 'Y'>
+						<cfif StructKeyExists( Achs, Ach.ID ) AND StructFind( Achs, Ach.ID ) EQ 'Y'>
 							<img src="images/check.png" alt="Completed" />
 							<cfset AchCompleted++ />
 							<cfset Total.IncrementTotal( Ach.ID ) />
