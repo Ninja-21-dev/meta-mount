@@ -22,7 +22,7 @@ ORDER BY CharName
 <cfoutput>
 <div style="margin:auto; width:1000px; height:202px;"><img src="images/banner.jpg" width="1000" height="202" alt="Insolent Banner" /></div>
 
-<cfloop list="T11,T12" index="Tier">
+<cfloop list="T12,T11" index="Tier">
 	<!--- Init Tier Counters --->
 	<cfset Total = new com.Total() />
 	<cfset CharsDisplayed = 0 />
