@@ -64,7 +64,7 @@ ORDER BY CharName
 						</cfif>	
 					</td>					
 				</cfloop>
-				<td class="percent">#displayPercent( AchCompleted, ArrayLen( Tiers[ Tier ][ 'Required' ] ) )#</td>
+				<td class="percent">#formatTotal( AchCompleted, ArrayLen( Tiers[ Tier ][ 'Required' ] ) )#</td>
 				<!--- Track the meta total too --->
 				<cfif AchCompleted EQ ArrayLen( Tiers[ Tier ][ 'Required'] )>
 					<cfset Total.IncrementTotal( Tiers[ Tier ][ 'Meta' ].ID ) />
@@ -75,9 +75,9 @@ ORDER BY CharName
 		<tr>
 			<td class="total">&nbsp;</td>
 			<cfloop array="#Tiers[ Tier ][ 'Required' ]#" index="Ach">
-				<td class="total">#displayPercent( Total.getTotal( Ach.Id ), CharsDisplayed )#</td>
+				<td class="total">#formatTotal( Total.getTotal( Ach.Id ), CharsDisplayed )#</td>
 			</cfloop>
-			<td class="total percent">#displayPercent( Total.getTotal( Tiers[ Tier ][ 'Meta' ].Id ), CharsDisplayed )#</td>
+			<td class="total percent">#formatTotal( Total.getTotal( Tiers[ Tier ][ 'Meta' ].Id ), CharsDisplayed )#</td>
 		</tr>
 	</table>
 	<br/><br/>
@@ -86,7 +86,7 @@ ORDER BY CharName
 <p class="disclaimer">Only players active within the last two weeks and who have at least one achievement completed are shown in the table. ASCII names are also broken for some reason.</p>
 </cfoutput>
 
-<cffunction name="displayPercent" output="no" returntype="string">
+<cffunction name="formatTotal" output="no" returntype="string">
 	<cfargument name="Numerator" required="yes" type="numeric" />
 	<cfargument name="Denominator" required="yes" type="numeric" />
 	
