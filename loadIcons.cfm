@@ -10,6 +10,11 @@
 <cfset Tiers.T12.Required = [] />
 <cfset Tiers.T12.TierName = 'T12 - Firelands' />
 
+<cfset Tiers.T13.List = '6174,6129,6128,6175,6084,6105,6133,6180,6110,6109,6111,6112,6113,6114,6115,6116' />
+<cfset Tiers.T13.Complete = '6169' />
+<cfset Tiers.T13.Required = [] />
+<cfset Tiers.T13.TierName = 'T13 - Dragon Soul' />
+
 <!--- Load Ach icons, loop through the list to maintain order --->
 <cfloop collection="#Tiers#" item="Tier">
 	<!--- Find Normal Requirements --->
@@ -29,10 +34,11 @@
 	</cfloop>
 </cfloop>
 
-<cfset StructDelete( Tiers.T11, "List" ) />
-<cfset StructDelete( Tiers.T11, "Complete" ) />
-<cfset StructDelete( Tiers.T12, "List" ) />
-<cfset StructDelete( Tiers.T12, "Complete" ) />
+<!--- Clean up Struct before we serialize it --->
+<cfloop list="#StructKeyList( Tiers )#" index="Tier">
+	<cfset StructDelete( Tiers[ Tier ], "List" ) />
+	<cfset StructDelete( Tiers[ Tier ], "Complete" ) />
+</cfloop>
 
 <!--- Output it as JSON so we can save it --->
 <cfdump var="#SerializeJSON( Tiers )#" />
