@@ -1,5 +1,5 @@
-<cfsetting requesttimeout="600" />
 <cfflush interval="10" />
+<cfsetting requesttimeout="6000" />
 
 <cftry>
 
