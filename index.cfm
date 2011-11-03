@@ -48,6 +48,8 @@ ORDER BY CharName
 				<cfcontinue />
 			</cfif>
 			
+			<cfset AchLinkBase = "http://us.battle.net/wow/en/character/burning-blade/" & getChars.CharName & "/achievement##168:15068:a" />
+			
 			<cfset CharsDisplayed++ />
 			
 			<cfset AchCompleted = 0 />
@@ -56,11 +58,11 @@ ORDER BY CharName
 				<cfloop array="#Tiers[ Tier ][ 'Required' ]#" index="Ach">
 					<td class="center">
 						<cfif StructKeyExists( Achs, Ach.ID ) AND StructFind( Achs, Ach.ID ) EQ 'Y'>
-							<img src="images/check.png" alt="Completed" />
+							<a href="#AchLinkBase & Ach.ID#"><img src="images/check.png" alt="Completed" /></a>
 							<cfset AchCompleted++ />
 							<cfset Total.IncrementTotal( Ach.ID ) />
 						<cfelse>
-							<img src="images/x.png" alt="Not Completed" />
+							<a href="#AchLinkBase & Ach.ID#"><img src="images/x.png" alt="Not Completed" /></a>
 						</cfif>	
 					</td>					
 				</cfloop>
