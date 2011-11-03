@@ -57,3 +57,6 @@ a, a:link, a:visited, a:active, a:hover{
 .center{
 	text-align:center;
 }
+img{
+	border:0;
+}
