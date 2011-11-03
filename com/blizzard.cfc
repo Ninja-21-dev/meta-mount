@@ -3,8 +3,8 @@ component output = false
 	blizzard function init( required string Server, required string Guild ) output = false
 	{
 		// Convert to URL safe variables and set
-		Variables.Guild = URLEncode( Arguments.Guild );
-		Variables.Server = URLEncode( Arguments.Server );
+		Variables.Guild = URLEncodedFormat( Arguments.Guild );
+		Variables.Server = URLEncodedFormat( Arguments.Server );
 		
 		return this;
 	}
