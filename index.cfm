@@ -11,7 +11,7 @@
 <cftry>
 <!--- Grab data --->
 <cfquery name="getChars">
-SELECT CharName, T11, T12
+SELECT CharName, T11, T12, T13
 FROM mounts
 ORDER BY CharName
 </cfquery>
@@ -22,7 +22,7 @@ ORDER BY CharName
 <cfoutput>
 <div style="margin:auto; width:1000px; height:202px;"><img src="images/banner.jpg" width="1000" height="202" alt="Insolent Banner" /></div>
 
-<cfloop list="T12,T11" index="Tier">
+<cfloop list="T11,T12,T13" index="Tier">
 	<!--- Init Tier Counters --->
 	<cfset Total = new com.Total() />
 	<cfset CharsDisplayed = 0 />
@@ -107,7 +107,7 @@ ORDER BY CharName
 <cffunction name="displayIcon" output="no" returntype="string">
 	<cfargument name="Ach" required="yes" type="struct" />
 	
-	<cfreturn '<a href="http://www.wowhead.com/achievement=#Arguments.Ach.Id#"><img src="http://wow.zamimg.com/images/wow/icons/medium/#Arguments.Ach.Icon#.jpg" alt="#Arguments.Ach.ID#" /></a>' />
+	<cfreturn '<a href="http://ptr.wowhead.com/achievement=#Arguments.Ach.Id#"><img src="http://wow.zamimg.com/images/wow/icons/medium/#Arguments.Ach.Icon#.jpg" alt="#Arguments.Ach.ID#" /></a>' />
 </cffunction>
 
 <cfcatch>
