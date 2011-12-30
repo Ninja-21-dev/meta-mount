@@ -1,8 +1,9 @@
+<cfoutput>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-	<title>Insolent - Burning Blade - Mount Meta Completion Tracking</title>	
+	<title>#Request.Guild# - #Request.Server# - Mount Meta Completion Tracking</title>	
 	<script type="text/javascript" src="http://static.wowhead.com/widgets/power.js" defer></script>
 	<link rel='stylesheet' href='css.css' type='text/css'/>
 </head>
@@ -13,16 +14,17 @@
 <cfquery name="getChars">
 SELECT CharName, T11, T12, T13
 FROM mounts
+WHERE GuildName = <cfqueryparam value="#Request.Guild#" cfsqltype="cf_sql_varchar" />
+AND ServerName = <cfqueryparam value="#Request.Server#" cfsqltype="cf_sql_varchar" />
 ORDER BY CharName
 </cfquery>
 
 <!--- Init Tiers --->
 <cfset Tiers = DeSerializeJSON( Request.TierJSON ) />
 
-<cfoutput>
-<div style="margin:auto; width:1000px; height:202px;"><img src="images/banner.jpg" width="1000" height="202" alt="Insolent Banner" /></div>
+<h1 style="color: ##bcbdbd; text-align:center">#Request.Guild# - #Request.Server#</h1>
 
-<cfloop list="T11,T12,T13" index="Tier">
+<cfloop list="T13,T12,T11" index="Tier">
 	<!--- Init Tier Counters --->
 	<cfset Total = new com.Total() />
 	<cfset CharsDisplayed = 0 />
@@ -86,7 +88,6 @@ ORDER BY CharName
 </cfloop>
 
 <p class="disclaimer">Only players active within the last two weeks and who have at least one achievement completed are shown in the table. ASCII names are also broken for some reason.</p>
-</cfoutput>
 
 <cffunction name="formatTotal" output="no" returntype="string">
 	<cfargument name="Numerator" required="yes" type="numeric" />
@@ -117,3 +118,4 @@ ORDER BY CharName
 
 </body>
 </html>
+</cfoutput>
