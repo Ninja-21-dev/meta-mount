@@ -108,7 +108,7 @@ ORDER BY CharName
 <cffunction name="displayIcon" output="no" returntype="string">
 	<cfargument name="Ach" required="yes" type="struct" />
 	
-	<cfreturn '<a href="http://ptr.wowhead.com/achievement=#Arguments.Ach.Id#"><img src="http://wow.zamimg.com/images/wow/icons/medium/#Arguments.Ach.Icon#.jpg" alt="#Arguments.Ach.ID#" /></a>' />
+	<cfreturn '<a href="http://www.wowhead.com/achievement=#Arguments.Ach.Id#"><img src="http://wow.zamimg.com/images/wow/icons/medium/#Arguments.Ach.Icon#.jpg" alt="#Arguments.Ach.ID#" /></a>' />
 </cffunction>
 
 <cfcatch>
