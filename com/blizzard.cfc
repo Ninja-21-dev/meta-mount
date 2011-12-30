@@ -22,7 +22,7 @@ component output = false
 		if ( ! StructKeyExists( JSON, "Members" ) )
 		{
 			// Throw an error
-			throw( message = 'Error, no members downloaded' );
+			throw( message = 'Error, no members downloaded - ' & 'http://us.battle.net/api/wow/guild/' & Variables.Server & '/' & Variables.Guild & '?fields=members' );
 		}
 		
 		return JSON.Members;		
