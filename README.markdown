@@ -10,6 +10,7 @@ The project is currently setup to meet my needs, but should be easy to edit to t
 Why
 --
 I mainly made this to learn and play with the following:
-*Github
-*Script CFCs
-*Blizzard's new API
+
+* Github
+* Script CFCs
+* Blizzard's new API
