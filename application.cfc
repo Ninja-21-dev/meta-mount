@@ -28,6 +28,9 @@ component output = false
 			Application.BCP[ Guild ] = new com.blizzard( Server = Application.Guilds[ Guild ].Server, Guild = Application.Guilds[ Guild ].GName );
 		}
 		
+		// Start Total Service
+		Application.Total = new com.Total();
+		
 		return true;
 	}
 	

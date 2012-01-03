@@ -26,4 +26,9 @@ component output = false
 			Variables.Total[ Arguments.Name ] = 0;
 		}
 	}
+	
+	void function reset() output = false
+	{
+		Variables.Total = {};
+	}
 }
