@@ -1,26 +1,21 @@
 component output = false
 {
-	blizzard function init( required string Server, required string Guild ) output = false
-	{
-		// Convert to URL safe variables and set
-		Variables.Guild = URLEncodedFormat( Arguments.Guild );
-		Variables.Server = URLEncodedFormat( Arguments.Server );
+	property Guild;
+	property Server;
 		
-		return this;
-	}
-	
 	array function getMembers() output = false
 	{
 		// Grab our result
 		var http = new HTTP( url = 'http://us.battle.net/api/wow/guild/' & Variables.Server & '/' & Variables.Guild & '?fields=members', getasbinary = 'yes' );
 		http = http.Send().getPrefix();
-				
-		// Convert to JSON		
+						
+		// Convert to JSON
 		var JSON = DeSerializeJSON( ToString( http.FileContent ) );
 		
 		// Ensure the Members struct exists
 		if ( ! StructKeyExists( JSON, "Members" ) )
 		{
+			dump( JSON );
 			// Throw an error
 			throw( message = 'Error, no members downloaded - ' & 'http://us.battle.net/api/wow/guild/' & Variables.Server & '/' & Variables.Guild & '?fields=members' );
 		}
@@ -50,4 +45,14 @@ component output = false
 		
 		return JSON;
 	}
+	
+	void function setGuild( required GuildName ) output = false
+	{
+		Variables.Guild = URLEncodedFormat( Arguments.GuildName );
+	}
+	
+	void function setServer( required ServerName ) output = false
+	{
+		Variables.Server = URLEncodedFormat( Arguments.ServerName );
+	}	
 }

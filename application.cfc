@@ -20,15 +20,9 @@ component output = false
 				GName = 'Predestined'
 			}
 		};
-		
-		// Init all of our Blizzard APIs
-		Application.BCP = {};
-		for ( Guild in Application.Guilds )
-		{
-			Application.BCP[ Guild ] = new com.blizzard( Server = Application.Guilds[ Guild ].Server, Guild = Application.Guilds[ Guild ].GName );
-		}
-		
-		// Start Total Service
+
+		// Services
+		Application.BCP = new com.Blizzard();
 		Application.Total = new com.Total();
 		
 		return true;

@@ -6,12 +6,16 @@
 <!--- Init Tiers --->
 <cfset Tiers = DeSerializeJSON( Request.TierJSON ) />
 
+<!--- Use BCP Service --->
+<cfset API = Application.BCP />
+
 <!--- Run this for All Guilds --->
 <cfloop collection="#Application.Guilds#" item="Guild">
 	<h2><cfoutput>#Guild#</cfoutput></h2>
-	<!--- Grab our API --->
-	<cfset API = Application.BCP[ Guild ] />
-	
+	<!--- Config the  API --->
+	<cfset API.setServer( Application.Guilds[ Guild ].Server ) />
+	<cfset API.setGuild( Application.Guilds[ Guild ].GName ) />
+		
 	<!--- Grab Guild --->
 	<cfset Members = API.getMembers() />
 	
@@ -28,7 +32,7 @@
 			
 		<!--- Did we return an error --->
 		<cfif StructKeyExists( MemberJSON, 'Error' )>
-			<cfdump var="#MemberJSON#" />
+			<cfdump var="#MemberJSON.Error#" />
 			<cfcontinue />
 		</cfif>	
 			
@@ -43,15 +47,13 @@
 	
 		<!--- Ensure we have achievements --->
 		<cfif ! StructKeyExists( MemberJSON, "Achievements" )>
-			Missing Achievements Struct.
-			<cfdump var="#MemberJSON#" />
+			...Missing Achievements Struct, skipping.
 			<cfcontinue />
 		</cfif>
 	
 		<!--- Ensure we have achievements completed --->
 		<cfif ! StructKeyExists( MemberJSON.Achievements, "AchievementsCompleted" )>
-			Missing Achievements Completed Struct.
-			<cfdump var="#MemberJSON.Achievements#" />
+			...Missing Achievements Completed Struct, skipping.
 			<cfcontinue />
 		</cfif>
 			
