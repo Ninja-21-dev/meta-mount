@@ -1,15 +1,3 @@
-<!--- Prevent this page from being called accidently --->
-<cfif ! StructKeyExists( url, "reload" )>
-	<cflocation url="./" addtoken="no" />
-</cfif>
-
-<!--- Make Table --->
-<cfquery>
-DROP TABLE IF EXISTS `mounts`
-</cfquery>
-Dropped.<br/>
-
-<cfquery>
 CREATE TABLE `mounts` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `ServerName` varchar(30) CHARACTER SET utf8 NOT NULL,
@@ -22,6 +10,3 @@ CREATE TABLE `mounts` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `character_UNIQUE` ( `ServerName`, `GuildName`, `CharName` )
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1
-</cfquery>
-
-Created mounts table.
