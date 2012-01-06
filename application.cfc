@@ -23,7 +23,6 @@ component output = false
 
 		// Services
 		Application.BCP = new com.Blizzard();
-		Application.Total = new com.Total();
 		
 		return true;
 	}

@@ -25,7 +25,7 @@ ORDER BY CharName
 <h1 style="color: ##bcbdbd; text-align:center">#Request.Guild# - #Request.Server#</h1>
 
 <!--- Use Total Service ---->
-<cfset Total = Application.Total />
+<cfset Total = new com.Total() />
 
 <cfloop list="T13,T12,T11" index="Tier">
 	<!--- Init Tier Counters --->
