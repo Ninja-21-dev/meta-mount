@@ -62,13 +62,13 @@ ORDER BY CharName
 				#Header#
 			</cfif>
 			
-			<cfset AchLinkBase = "http://us.battle.net/wow/en/character/burning-blade/" & getChars.CharName & "/achievement##168:15068:a" />
+			<cfset AchLinkBase = "http://us.battle.net/wow/en/character/" & URLEncodedFormat( Request.Server ) & "/" & getChars.CharName & "/achievement##168:15068:a" />
 			
 			<cfset CharsDisplayed++ />
 			
 			<cfset AchCompleted = 0 />
 			<tr>
-				<td class="label"><a href="http://us.battle.net/wow/en/character/burning-blade/#getChars.CharName#/advanced">#getChars.CharName#</a></td>
+				<td class="label"><a href="http://us.battle.net/wow/en/character/#URLEncodedFormat( Request.Server )#/#getChars.CharName#/advanced">#getChars.CharName#</a></td>
 				<cfloop array="#Tiers[ Tier ][ 'Required' ]#" index="Ach">
 					<td class="center">
 						<cfif StructKeyExists( Achs, Ach.ID ) AND StructFind( Achs, Ach.ID ) EQ 'Y'>
