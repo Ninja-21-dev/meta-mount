@@ -32,10 +32,8 @@ ORDER BY CharName
 	<cfset Total.Reset() />
 	<cfset CharsDisplayed = 0 />
 	
-	<table class="ach">
-		<tr>
-			<th colspan="#2+ArrayLen( Tiers[ Tier ][ 'Required' ] )#">#Tiers[ Tier ].TierName#</th>
-		</tr>
+	<!--- Save the header --->
+	<cfsavecontent variable="Header">
 		<tr>
 			<td class="label">Character</td>
 			<cfloop array="#Tiers[ Tier ][ 'Required' ]#" index="Ach">
@@ -43,7 +41,13 @@ ORDER BY CharName
 			</cfloop>
 			<td class="percent center">#DisplayIcon( Tiers[ Tier ][ 'Meta' ] )#</td>
 		</tr>
-		
+	</cfsavecontent>
+	
+	<table class="ach">
+		<tr>
+			<th colspan="#2+ArrayLen( Tiers[ Tier ][ 'Required' ] )#">#Tiers[ Tier ].TierName#</th>
+		</tr>
+				
 		<cfloop query="getChars">
 			<!--- Convert to Struct --->
 			<cfset Achs = DeSerializeJSON( getChars[ Tier ][ getChars.CurrentRow ] ) />
@@ -51,6 +55,11 @@ ORDER BY CharName
 			<!--- Ensure we have at least one Y --->			
 			<cfif ArrayLen( StructFindValue( Achs, 'Y' ) ) EQ 0>
 				<cfcontinue />
+			</cfif>
+
+			<!--- Display Header every 15 rows --->
+			<cfif ! CharsDisplayed MOD 15>
+				#Header#
 			</cfif>
 			
 			<cfset AchLinkBase = "http://us.battle.net/wow/en/character/burning-blade/" & getChars.CharName & "/achievement##168:15068:a" />
