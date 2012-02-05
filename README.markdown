@@ -14,3 +14,13 @@ I mainly made this to learn and play with the following:
 * Github
 * Script CFCs
 * Blizzard's new API
+
+Requirements
+------------
+For CFML engine:
+* Adobe CF - 9+ required for script based CFCs
+* Railo 3.2+ tested
+* OpenBD - not tested
+
+Database:
+* MySQL 5+, currently using specific MySQL code
